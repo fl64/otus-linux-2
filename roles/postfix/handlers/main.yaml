@@ -1,0 +1,10 @@
+---
+- name: restart postfix
+  become: true
+  systemd:
+    name: postfix.service
+    state: restarted
+
+- name: postmap
+  become: true
+  shell: postmap /etc/postfix/sender_canonical_maps

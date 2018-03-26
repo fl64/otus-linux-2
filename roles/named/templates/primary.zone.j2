@@ -1,0 +1,14 @@
+$TTL	2d
+$ORIGIN	{{ ns.primary_zone }}.
+
+@     			IN      SOA  {{ ns.hostname }}.{{ ns.primary_zone }}. admin.{{ ns.hostname }}.{{ ns.primary_zone }}. (
+				2017121407 ; Serial
+				2H         ; Refresh
+				30M        ; Retry
+				1W         ; Expire
+				1D      )  ; Negative Cache TTL
+
+						IN      NS      {{ ns.hostname }}.{{ ns.primary_zone }}.
+{% for host in endpoints %}
+{{ host.hostname }}		IN 		A 	{{ host.ip }}
+{% endfor %}

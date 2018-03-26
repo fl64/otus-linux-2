@@ -1,0 +1,16 @@
+
+- name: Create postfix configs
+  template: src={{ item.j2 }} dest={{ item.dst }} owner={{ item.owner }} group={{ item.group }} mode=0644
+  with_items:
+  - {j2: "templates/main.cf.j2", dst: "/etc/postfix/main.cf", owner: "root", group: "root"}
+  - {j2: "templates/header_checks.j2", dst: "/etc/postfix/header_checks", owner: "root", group: "root"}
+  - {j2: "templates/sender_canonical_maps.j2", dst: "/etc/postfix/sender_canonical_maps", owner: "root", group: "root"}
+
+  notify:
+  - restart postfix
+  tags: postfix
+
+- name: Enable postfix
+  systemd: name=postfix state=started enabled=yes
+  tags: postfix
+

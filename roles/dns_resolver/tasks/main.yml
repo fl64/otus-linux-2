@@ -1,0 +1,23 @@
+---
+- name: Disable dhcpclient modify resolve.conf for {{ ansible_interfaces[1] }}
+  lineinfile: dest=/etc/sysconfig/network-scripts/ifcfg-{{ ansible_interfaces[1] }}
+              regexp='^PEERDNS=no'
+              insertafter=EOF
+              line='PEERDNS=no'
+  notify:
+  - restart network
+  tags: networking
+
+#- name: Debug!
+#  debug: msg={{ ansible_default_ipv4.interface }}
+#  debug: msg={{ ansible_interfaces[1] }}
+
+- name: Create resolver.conf
+  
+  template: src=resolv.j2 dest=/etc/resolv.conf 
+  notify:
+  - restart network
+  become: true
+  tags:
+  - resolver
+- meta: flush_handlers

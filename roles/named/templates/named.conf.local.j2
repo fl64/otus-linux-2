@@ -1,0 +1,8 @@
+zone "{{ ns.primary_zone }}" {
+    type master;
+    file "/etc/named/zones/primary.zone";
+};
+zone "{{ ns.reverse_zone }}" {
+    type master;
+    file "/etc/named/zones/reverse.zone";
+};

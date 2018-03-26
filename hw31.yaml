@@ -1,0 +1,19 @@
+---
+- hosts: all
+  become: true
+  gather_facts: yes
+  roles:
+    - common
+    - postfix
+
+- hosts: srv1
+  become: true
+  gather_facts: yes
+  roles:
+    - named
+
+- hosts: all
+  become: true
+  gather_facts: yes
+  roles:
+    - dns_resolver

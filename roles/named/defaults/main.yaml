@@ -1,0 +1,9 @@
+ns:
+  primary_zone: example.com
+  reverse_zone: 0.0.10.in-addr.arpa
+  hostname: srv1
+  lan: 10.0.0.0/24
+endpoints:
+  - { hostname: "srv1",    ip: 10.0.0.10  }
+  - { hostname: "srv2",    ip: 10.0.0.20  }
+  - { hostname: "win2012", ip: 10.0.0.100 }
