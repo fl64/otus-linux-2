@@ -17,7 +17,7 @@ global_defs {
 vrrp_instance VI_1 {
     state BACKUP
     interface enp0s8
-    virtual_router_id {{ ansible_enp0s8.ipv4.address.split('.')[3] }}
+    virtual_router_id 100
     priority {{ ansible_enp0s8.ipv4.address.split('.')[3] }}
     advert_int 1
     authentication {
@@ -27,5 +27,18 @@ vrrp_instance VI_1 {
     virtual_ipaddress {
       10.0.0.100
     }
+
+  {% if ansible_hostname == 'srv1' %}
+  notify_master "/usr/bin/redis-cli slaveof no one; /usr/bin/redis-cli config rewrite"
+  notify_backup "/usr/bin/redis-cli slaveof 10.0.0.20 6379; /usr/bin/redis-cli config rewrite"
+  notify_fault "/usr/bin/redis-cli slaveof no one; /usr/bin/redis-cli config rewrite"
+  {% endif %}
+
+  {% if ansible_hostname == 'srv2' %}
+  notify_master "/usr/bin/redis-cli slaveof no one; /usr/bin/redis-cli config rewrite"
+  notify_backup "/usr/bin/redis-cli slaveof 10.0.0.10 6379; /usr/bin/redis-cli config rewrite"
+  notify_fault "/usr/bin/redis-cli slaveof no one; /usr/bin/redis-cli config rewrite"
+  {% endif %}
+
 }
 

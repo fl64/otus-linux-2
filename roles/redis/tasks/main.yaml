@@ -28,7 +28,7 @@
   - { regexp: '^bind', line: 'bind 0.0.0.0' }
   - { regexp: '^tcp-keepalive', line: 'tcp-keepalive 60' }
   - { regexp: '^maxmemory-policy', line: 'maxmemory-policy noeviction' }
-
+  - { regexp: '^loglevel', line: 'loglevel debug' }
   notify:
     - redis restart
   tags: redis
