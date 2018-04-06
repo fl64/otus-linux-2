@@ -16,6 +16,12 @@
   tags:
   - vrrp
 
+- name: Deploy script
+  template: src={{ item.j2 }} dest={{ item.dst }} mode=0755 owner=root group=root
+  with_items:
+  - {j2: "templates/redis.sh.j2", dst: "/usr/local/bin/redis.sh"}
+  tags:
+  - vrrp
 
 - name: Create keepalived configs
   template: src={{ item.j2 }} dest={{ item.dst }} mode=0664 owner=root group=root

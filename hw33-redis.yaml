@@ -7,8 +7,8 @@
     - redis
     - vrrp
 
-- hosts: srv2
-  become: true
-  gather_facts: yes
-  roles:
-    - redis_slave
+#- hosts: srv1
+#  become: true
+#  gather_facts: yes
+#  roles:
+#    - redis_slave

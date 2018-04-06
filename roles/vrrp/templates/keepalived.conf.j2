@@ -17,7 +17,7 @@ global_defs {
 vrrp_instance VI_1 {
     state BACKUP
     interface enp0s8
-    virtual_router_id {{ ansible_enp0s8.ipv4.address.split('.')[3] }}
+    virtual_router_id 100
     priority {{ ansible_enp0s8.ipv4.address.split('.')[3] }}
     advert_int 1
     authentication {
@@ -27,5 +27,18 @@ vrrp_instance VI_1 {
     virtual_ipaddress {
       10.0.0.100
     }
+
+  {% if ansible_hostname == 'srv1' %}
+  notify_master "/usr/local/bin/redis.sh MASTER"
+  notify_backup "/usr/local/bin/redis.sh SLAVE 10.0.0.20"
+  notify_fault "/usr/local/bin/redis.sh MASTER"
+  {% endif %}
+
+  {% if ansible_hostname == 'srv2' %}
+  notify_master "/usr/local/bin/redis.sh MASTER"
+  notify_backup "/usr/local/bin/redis.sh SLAVE 10.0.0.10"
+  notify_fault "/usr/local/bin/redis.sh MASTER"
+  {% endif %}
+
 }
 
