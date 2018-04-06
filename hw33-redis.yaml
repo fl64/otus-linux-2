@@ -1,0 +1,14 @@
+---
+- hosts: all
+  become: true
+  gather_facts: yes
+  roles:
+    - common
+    - redis
+    - vrrp
+
+- hosts: srv2
+  become: true
+  gather_facts: yes
+  roles:
+    - redis_slave

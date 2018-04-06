@@ -1,0 +1,15 @@
+- name: Change config
+  lineinfile:
+    path: /etc/redis.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+    insertafter: EOF
+    #backrefs: yes
+    backup: yes
+  with_items:
+  - { regexp: '^slaveof', line: 'slaveof 10.0.0.10 6379' }
+  notify:
+    - redis restart
+  tags: redis
+

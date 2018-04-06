@@ -1,0 +1,34 @@
+---
+- name: install redis
+  become: true
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+  - redis
+  tags:
+  - redis
+
+- name: Enable redis
+  become: true
+  systemd: name=redis state=started enabled=yes
+  tags:
+  - redis
+
+- name: Change config
+  lineinfile:
+    path: /etc/redis.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+    insertafter: EOF
+    #backrefs: yes
+    backup: yes
+  with_items:
+  - { regexp: '^bind', line: 'bind 0.0.0.0' }
+  - { regexp: '^tcp-keepalive', line: 'tcp-keepalive 60' }
+  - { regexp: '^maxmemory-policy', line: 'maxmemory-policy noeviction' }
+
+  notify:
+    - redis restart
+  tags: redis

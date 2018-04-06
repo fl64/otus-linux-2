@@ -1,0 +1,32 @@
+---
+- name: install keepalive
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+  - keepalived
+  tags:
+  - vrrp
+
+#/etc/keepalived/keepalived.conf
+
+- name: Enable keepalive
+  become: true
+  systemd: name=keepalived state=started enabled=yes
+  tags:
+  - vrrp
+
+
+- name: Create keepalived configs
+  template: src={{ item.j2 }} dest={{ item.dst }} mode=0664 owner=root group=root
+  with_items:
+  - {j2: "templates/keepalived.conf.j2", dst: "/etc/keepalived/keepalived.conf"}
+  notify:
+    - keepalived restart
+  tags:
+  - vrrp
+
+- name: debug
+  debug: msg={{ansible_enp0s8.ipv4.address.split('.')[3]}}
+  tags:
+  - vrrp
