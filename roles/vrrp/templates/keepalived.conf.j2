@@ -30,13 +30,13 @@ vrrp_instance VI_1 {
 
   {% if ansible_hostname == 'srv1' %}
   notify_master "/usr/local/bin/redis.sh MASTER"
-  notify_backup "/usr/local/bin/redis.sh SLAVE 10.0.0.20"
+  notify_backup "/usr/local/bin/redis.sh BACKUP 10.0.0.20"
   notify_fault "/usr/local/bin/redis.sh MASTER"
   {% endif %}
 
   {% if ansible_hostname == 'srv2' %}
   notify_master "/usr/local/bin/redis.sh MASTER"
-  notify_backup "/usr/local/bin/redis.sh SLAVE 10.0.0.10"
+  notify_backup "/usr/local/bin/redis.sh BACKUP 10.0.0.10"
   notify_fault "/usr/local/bin/redis.sh MASTER"
   {% endif %}
 
