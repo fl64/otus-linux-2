@@ -18,3 +18,7 @@
   systemd: name=firewalld state=stopped enabled=no
   register: result
   tags: common, fw
+
+- name: Setting SELinux to permissive
+  selinux: policy=targeted state=permissive
+  tags: common, selinux

@@ -29,15 +29,15 @@ vrrp_instance VI_1 {
     }
 
   {% if ansible_hostname == 'srv1' %}
-  notify_master "/usr/bin/redis-cli slaveof no one; /usr/bin/redis-cli config rewrite"
-  notify_backup "/usr/bin/redis-cli slaveof 10.0.0.20 6379; /usr/bin/redis-cli config rewrite"
-  notify_fault "/usr/bin/redis-cli slaveof no one; /usr/bin/redis-cli config rewrite"
+  notify_master "/usr/local/bin/redis.sh MASTER"
+  notify_backup "/usr/local/bin/redis.sh SLAVE 10.0.0.20"
+  notify_fault "/usr/local/bin/redis.sh MASTER"
   {% endif %}
 
   {% if ansible_hostname == 'srv2' %}
-  notify_master "/usr/bin/redis-cli slaveof no one; /usr/bin/redis-cli config rewrite"
-  notify_backup "/usr/bin/redis-cli slaveof 10.0.0.10 6379; /usr/bin/redis-cli config rewrite"
-  notify_fault "/usr/bin/redis-cli slaveof no one; /usr/bin/redis-cli config rewrite"
+  notify_master "/usr/local/bin/redis.sh MASTER"
+  notify_backup "/usr/local/bin/redis.sh SLAVE 10.0.0.10"
+  notify_fault "/usr/local/bin/redis.sh MASTER"
   {% endif %}
 
 }

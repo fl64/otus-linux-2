@@ -1,0 +1,28 @@
+#!/bin/bash
+
+STATE=$1
+IP=$2
+
+case $STATE in
+        "MASTER")
+#					/usr/bin/redis-cli SLAVEOF $IP 6379
+					/usr/bin/redis-cli SLAVEOF NO ONE
+                	exit 0
+                  	;;
+        "BACKUP")
+					/usr/bin/redis-cli SLAVEOF $IP 6379
+                  	exit 0
+                  	;;
+        "STOP")
+					/usr/bin/redis-cli SLAVEOF NO ONE
+                	exit 0
+                  	;;
+        "FAULT")
+					/usr/bin/redis-cli SLAVEOF NO ONE
+                	exit 0
+                  	;;
+        *)
+					/usr/bin/redis-cli SLAVEOF NO ONE
+                	exit 0
+                  	;;
+esac
